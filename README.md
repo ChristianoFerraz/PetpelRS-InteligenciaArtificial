@@ -19,6 +19,21 @@ Para executar o projeto é necessário possuir:
 
 ---
 
+# Obtendo o Projeto
+
+Clone o repositório oficial:
+
+```bash
+git clone https://github.com/ChristianoFerraz/PetpelRS-InteligenciaArtificial.git
+```
+
+Acesse a pasta do projeto:
+
+```bash
+cd PetpelRS-InteligenciaArtificial
+
+```
+
 # Configuração
 
 Na pasta `emergentes_aula1-main`, crie (ou edite) um arquivo `.env` com o seguinte conteúdo:
