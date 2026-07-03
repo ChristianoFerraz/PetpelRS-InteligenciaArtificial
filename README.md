@@ -1,195 +1,95 @@
-🐾 PetPelRS
+# 🐾 PetPelRS – Funcionalidade de IA com OpenRouter
 
-Plataforma web para cadastro, busca e gerenciamento de animais para adoção, perdidos e encontrados na cidade de Pelotas/RS. Permite que clientes cadastrem pets, troquem mensagens sobre eles, e conta com um painel administrativo. O projeto também integra duas funcionalidades de Inteligência Artificial: moderação automática de imagens e um recomendador de adoção baseado em LLM.
+## Introdução
 
-Índice
+O **PetPelRS** é uma plataforma web desenvolvida para auxiliar na divulgação de animais para **adoção, perdidos e encontrados** na cidade de Pelotas/RS. A aplicação permite que usuários visualizem animais cadastrados, publiquem anúncios e encontrem um pet de forma simples e organizada.
 
+Como requisito da disciplina, foi implementada uma funcionalidade de **Inteligência Artificial** utilizando a API **OpenRouter**, por meio do modelo **openai/gpt-4o-mini**.
 
-Visão geral
-Funcionalidades
-Inteligência Artificial no projeto
-Tecnologias
-Estrutura do repositório
-Pré-requisitos
-Instalação e execução
+Na página **/adocao**, o usuário responde a um breve questionário sobre seu perfil (moradia, rotina, experiência com animais, entre outras informações). Essas respostas são enviadas ao modelo juntamente com a lista de animais disponíveis para adoção cadastrados no sistema. A IA analisa essas informações e retorna os animais mais compatíveis com o perfil informado, apresentando uma porcentagem de compatibilidade e uma justificativa para cada recomendação.
 
-1. Clonar o repositório
-2. Configurar o backend (API)
-3. Configurar o frontend
-4. Rodando o projeto no dia a dia
+---
 
+# Requisitos
 
+Para executar o projeto é necessário possuir:
 
-Variáveis de ambiente
-Solução de problemas
-Deploy
-Licença
+- Node.js 18 ou superior;
+- Uma chave de API válida da OpenRouter.
 
+---
 
+# Configuração
 
-Visão geral
+Na pasta `emergentes_aula1-main`, crie (ou edite) um arquivo `.env` com o seguinte conteúdo:
 
-O sistema permite:
+```env
+VITE_API_URL=https://emergentes-aula1-main-6evg.vercel.app
+VITE_OPENROUTER_API_KEY=INSIRA_SUA_CHAVE_OPENROUTER
+```
 
+> **Observação:** A API utilizada pelo projeto já está hospedada e conectada ao banco de dados. Por questões de segurança, a chave da OpenRouter não é disponibilizada neste repositório. Para testar a funcionalidade, basta informar uma chave válida da sua conta OpenRouter.
 
-Cadastro e login de clientes e administradores;
-Cadastro de animais para adoção, perdidos ou encontrados;
-Busca de animais por nome/raça;
-Troca de mensagens (propostas de contato) entre clientes sobre um animal específico;
-Painel administrativo para gestão de cadastros;
-Envio automático de e-mails de confirmação;
-Autenticação via JWT;
-Moderação automática de fotos enviadas no cadastro dos animais;
-Recomendador de adoção com IA, que sugere pets do site com base no perfil do usuário.
+---
 
+# Executando o Projeto
 
-Funcionalidades
+Abra um terminal na pasta do frontend e execute:
 
-MóduloDescriçãoClientesCadastro, login e gerenciamento de perfilAnimaisCRUD completo (adoção / perdido / encontrado) com upload de foto via URLPropostasSistema de mensagens entre clientes sobre um animalAdminPainel para moderação/gestão de cadastrosPesquisaBusca de animais por nome ou raçaE-mailsNotificações automáticas via Gmail SMTP
-
-Inteligência Artificial no projeto
-
-O projeto usa dois serviços de IA distintos, ambos consumidos via API externa (não há modelo rodando localmente):
-
-🔍 Moderação de imagens — Sightengine
-
-Antes de qualquer animal ser cadastrado, a foto enviada é analisada automaticamente pela API da Sightengine, que verifica a presença de nudez, violência, armas, drogas, conteúdo ofensivo, entre outros. Cadastros com imagens impróprias são bloqueados automaticamente.
-
-📄 Implementação: api/utils/safeSearch.ts
-
-🐶 Analisador de Adoção — OpenRouter (GPT-4o-mini)
-
-Na rota /adocao, o usuário responde um questionário de 7 perguntas sobre seu estilo de vida (moradia, rotina, experiência com animais etc.). Essas respostas, junto com a lista de animais disponíveis para adoção no site, são enviadas para o modelo openai/gpt-4o-mini via OpenRouter, que retorna as recomendações mais compatíveis, com percentual de match e dicas personalizadas.
-
-📄 Implementação: emergentes_aula1-main/src/routes/AnalisadorAdocao.tsx
-
-
-Ambas as integrações exigem chaves de API próprias — veja a seção Variáveis de ambiente.
-
-
-
-Tecnologias
-
-Frontend: React 19 · Vite · TypeScript · Tailwind CSS 4 · React Router · Zustand
-
-Backend: Node.js · Express · TypeScript · Prisma ORM · JWT · Zod
-
-Banco de dados: PostgreSQL
-
-Serviços externos: Sightengine (moderação de imagem) · OpenRouter/GPT-4o-mini (recomendação de adoção) · Gmail SMTP (e-mails)
-
-Deploy: Vercel
-
-Estrutura do repositório
-
-petpelrs-master/
-├── api/                            # Backend (Node.js + Express + Prisma)
-│   ├── routes/                     # Rotas REST (animais, clientes, login, propostas, admin...)
-│   ├── prisma/schema.prisma        # Modelo do banco de dados
-│   ├── middleware/autentica.ts     # Middleware de autenticação JWT
-│   └── utils/
-│       ├── safeSearch.ts           # IA de moderação de imagens (Sightengine)
-│       └── email.ts                # Envio de e-mails
-│
-└── emergentes_aula1-main/          # Frontend (React + Vite)
-    └── src/
-        ├── routes/                 # Telas públicas (Listagem, Cadastro, Login, AnalisadorAdocao...)
-        ├── Admin/                  # Telas administrativas
-        └── context/                # Contextos globais (ex.: cliente autenticado)
-
-Pré-requisitos
-
-
-Node.js 18 ou superior (recomendado 20 LTS)
-Uma instância PostgreSQL — local ou em nuvem (ex.: Neon, Supabase)
-Conta gratuita na Sightengine (moderação de imagem)
-Conta na OpenRouter com créditos (recomendador de adoção)
-Opcional: conta Gmail com senha de app para envio de e-mails
-
-
-Instalação e execução
-
-1. Clonar o repositório
-
-bashgit clone https://github.com/seu-usuario/petpelrs.git
-cd petpelrs-master
-
-2. Configurar o backend (API)
-
-bashcd api
+```bash
+cd emergentes_aula1-main
 npm install
+npm run dev
+```
 
-Crie um arquivo .env na pasta api/ com o seguinte conteúdo (veja detalhes na seção Variáveis de ambiente):
+Após iniciar o projeto, acesse:
 
-envDATABASE_URL="postgresql://usuario:senha@host:5432/petpelrs"
-JWT_SECRET="uma-string-secreta-aleatoria"
+```
+http://localhost:5173
+```
 
-GMAIL_USER="seuemail@gmail.com"
-GMAIL_APP_PASSWORD="senha-de-app-gmail"
+---
 
-SIGHTENGINE_USER="seu-api-user-sightengine"
-SIGHTENGINE_SECRET="seu-api-secret-sightengine"
+# Como testar a funcionalidade de IA
 
-Aplique as migrações do banco de dados:
+1. Abra a aplicação em:
 
-bashnpx prisma migrate dev
+```
+http://localhost:5173
+```
 
-Inicie o servidor:
+2. Acesse a página:
 
-bashnpm run dev
+```
+/adocao
+```
 
-O backend sobe em http://localhost:3000.
+3. Responda às perguntas do questionário.
 
-3. Configurar o frontend
+4. Ao finalizar, a aplicação enviará ao modelo **openai/gpt-4o-mini**, através da API **OpenRouter**:
+   - as respostas fornecidas pelo usuário;
+   - a lista de animais disponíveis para adoção cadastrados no sistema.
 
-Em outro terminal:
+5. O modelo retornará:
+   - os animais mais compatíveis com o perfil informado;
+   - uma porcentagem de compatibilidade para cada recomendação;
+   - uma breve justificativa explicando os motivos das recomendações.
 
-bashcd emergentes_aula1-main
-npm install
+---
 
-Crie (ou edite) o arquivo .env na pasta emergentes_aula1-main/:
+# Estrutura do Projeto
 
-envVITE_API_URL=http://localhost:3000
-VITE_OPENROUTER_API_KEY="sk-or-sua-chave-openrouter"
+```text
+petpelrs/
+├── api/                     # Backend (Node.js + Express) - hospedado na Vercel
+└── emergentes_aula1-main/   # Frontend (React + Vite)
+```
 
-Inicie o frontend:
+---
 
-bashnpm run dev
+# Observações
 
-Acesse http://localhost:5173 no navegador.
-
-4. Rodando o projeto no dia a dia
-
-Após a primeira configuração, basta:
-
-bash# Terminal 1
-cd api && npm run dev
-
-# Terminal 2
-cd emergentes_aula1-main && npm run dev
-
-Variáveis de ambiente
-
-api/.env
-
-VariávelObrigatóriaDescriçãoDATABASE_URL✅String de conexão PostgreSQLJWT_SECRET✅Chave usada para assinar/validar tokens JWTSIGHTENGINE_USER✅*Usuário da API Sightengine (moderação de imagem)SIGHTENGINE_SECRET✅*Segredo da API SightengineGMAIL_USEROpcionalE-mail Gmail usado para envio de notificaçõesGMAIL_APP_PASSWORDOpcionalSenha de app do Gmail (não é a senha normal da conta)
-
-* Sem essas chaves, o cadastro de animais (POST /animais) falha, pois toda imagem é verificada antes de ser salva.
-
-emergentes_aula1-main/.env
-
-VariávelObrigatóriaDescriçãoVITE_API_URL✅URL base da API backendVITE_OPENROUTER_API_KEY✅*Chave da OpenRouter usada na página /adocao
-
-* Sem essa chave, o restante do site funciona normalmente; apenas o Analisador de Adoção (/adocao) não conseguirá gerar recomendações.
-
-Solução de problemas
-
-SintomaCausa provávelErro de conexão do Prisma com o bancoDATABASE_URL incorreta ou banco inacessível (verifique SSL em bancos gerenciados)401 Unauthorized em rotas protegidasToken JWT ausente ou expirado no header Authorization: Bearer <token>Erro 500 ao cadastrar animalSIGHTENGINE_USER/SIGHTENGINE_SECRET ausentes, ou urlImagem não é uma URL pública válidaSite carrega, mas sem dadosBackend não está rodando, ou VITE_API_URL incorreta/adocao não gera recomendaçõesVITE_OPENROUTER_API_KEY ausente/inválida ou sem créditos na conta OpenRouterE-mails de confirmação não chegamGMAIL_USER/GMAIL_APP_PASSWORD não configurados corretamente
-
-Deploy
-
-O projeto já inclui arquivos vercel.json no backend e no frontend, prontos para deploy na Vercel. Configure as mesmas variáveis de ambiente listadas acima no painel de cada projeto na Vercel.
-
-Licença
-
-Este projeto está sob a licença MIT.
+- A API do projeto já está publicada e integrada ao banco de dados utilizado pela aplicação.
+- Para testar a funcionalidade de Inteligência Artificial, é necessário apenas informar uma chave válida da OpenRouter no arquivo `.env` do frontend.
+- Caso a chave seja inválida ou a conta da OpenRouter não possua créditos disponíveis, a recomendação de adoção não será gerada.
+- O restante da aplicação continuará funcionando normalmente.
