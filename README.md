@@ -4,7 +4,7 @@
 
 O **PetPelRS** é uma plataforma web desenvolvida para auxiliar na divulgação de animais para **adoção, perdidos e encontrados** na cidade de Pelotas/RS. A aplicação permite que usuários visualizem animais cadastrados, publiquem anúncios e encontrem um pet de forma simples e organizada.
 
-Como requisito da disciplina, foi implementada uma funcionalidade de **Inteligência Artificial** utilizando a API **OpenRouter**, por meio do modelo **openai/gpt-4o-mini**.
+Como requisito da disciplina, foi implementada uma funcionalidade de **Inteligência Artificial** utilizando a API **OpenRouter**, por meio do modelo **openai/gpt-oss-120b:free**.
 
 Na página **/adocao**, o usuário responde a um breve questionário sobre seu perfil (moradia, rotina, experiência com animais, entre outras informações). Essas respostas são enviadas ao modelo juntamente com a lista de animais disponíveis para adoção cadastrados no sistema. A IA analisa essas informações e retorna os animais mais compatíveis com o perfil informado, apresentando uma porcentagem de compatibilidade e uma justificativa para cada recomendação.
 
