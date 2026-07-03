@@ -108,3 +108,4 @@ petpelrs/
 - Para testar a funcionalidade de Inteligência Artificial, é necessário apenas informar uma chave válida da OpenRouter no arquivo `.env` do frontend.
 - Caso a chave seja inválida ou a conta da OpenRouter não possua créditos disponíveis, a recomendação de adoção não será gerada.
 - O restante da aplicação continuará funcionando normalmente.
+- O modelo `openai/gpt-oss-120b:free` pode apresentar indisponibilidade temporária ou limitação de requisições por utilizar a camada gratuita da OpenRouter. Caso isso ocorra, para fins de teste da funcionalidade, é possível utilizar temporariamente o modelo `openai/gpt-4o-mini`, alterando apenas o nome do modelo na chamada da API no arquivo emergentes_aula1-main/src/routes/AnalisadorAdocao.tsx.
