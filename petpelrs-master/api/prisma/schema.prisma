@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Animal {
+  id        Int        @id @default(autoincrement())
+  nome      String
+  idade     Int
+  raca      String
+  urlImagem String
+  tipo      TipoAnimal
+  cidade    tipoCidade
+  usuarioId Int
+  usuario   Cliente    @relation(fields: [usuarioId], references: [id]) // RELAÇÃO PADRÃO
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  contatos  Contato[]
+}
+
+model Cliente {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String   @unique
+  telefone  String
+  senha     String
+  cpf       String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  role      String   @default("user")
+
+  animais           Animal[]
+  contatosEnviados  Contato[] @relation("ContatoRemetente")
+  contatosRecebidos Contato[] @relation("ContatoDestinatario")
+}
+
+model Contato {
+  id             Int      @id @default(autoincrement())
+  mensagem       String
+  criadoEm       DateTime @default(now())
+  lida           Boolean  @default(false)
+  animalId       Int
+  remetenteId    Int
+  destinatarioId Int
+
+  animal       Animal  @relation(fields: [animalId], references: [id], onDelete: Cascade)
+  remetente    Cliente @relation("ContatoRemetente", fields: [remetenteId], references: [id])
+  destinatario Cliente @relation("ContatoDestinatario", fields: [destinatarioId], references: [id])
+
+  @@index([animalId])
+  @@index([remetenteId])
+  @@index([destinatarioId])
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  email     String   @unique
+  senha     String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum TipoAnimal {
+  ADOCAO
+  PERDIDO
+  ENCONTRADO
+}
+
+enum tipoCidade {
+  PELOTAS
+}
