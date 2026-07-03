@@ -81,7 +81,7 @@ http://localhost:5173
 
 3. Responda às perguntas do questionário.
 
-4. Ao finalizar, a aplicação enviará ao modelo **openai/gpt-4o-mini**, através da API **OpenRouter**:
+4. Ao finalizar, a aplicação enviará ao modelo **openai/gpt-oss-120b:free**, através da API **OpenRouter**:
    - as respostas fornecidas pelo usuário;
    - a lista de animais disponíveis para adoção cadastrados no sistema.
 
